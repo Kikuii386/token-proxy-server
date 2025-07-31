@@ -1,7 +1,7 @@
 {
   "name": "token-proxy-server",
   "version": "1.0.0",
-  "description": "Lightweight proxy server for CMC, CoinGecko, and Dexscreener",
+  "description": "Proxy server for fetching and caching token metadata and prices from CMC, CoinGecko, and Dexscreener",
   "main": "server.ts",
   "scripts": {
     "dev": "tsx server.ts",
@@ -13,6 +13,10 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kikuii386/token-proxy-server.git"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.53.0",
     "@upstash/redis": "^1.35.3",
@@ -21,6 +25,7 @@
   "devDependencies": {
     "@types/express": "^5.0.3",
     "@types/node": "^24.1.0",
+    "ts-node": "^10.9.2",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }
