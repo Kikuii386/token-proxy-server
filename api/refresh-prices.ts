@@ -1,5 +1,5 @@
 // /api/refresh-prices.ts
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { Request, Response } from "express";
 import { Redis } from '@upstash/redis'
 import { fetchDexPrice } from "../lib/fetchDexPrice";
 import { fetchCMCPrice } from "../lib/fetchCMCPrice";
@@ -12,7 +12,7 @@ const redis = new Redis({
 
 const TTL_SECONDS = 60; // 1 minute
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: Request, res: Response) {
   try {
     const { id, contract, chain, cmc_id: cmcIdStr, gecko_id } = req.query as {
       id: string;

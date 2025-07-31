@@ -1,8 +1,8 @@
 // /api/enrich-sheet.ts
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { Request, Response } from "express";
 import { enrichTokens } from "../core/enrichTokens";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: Request, res: Response){
   try {
     // ดึงข้อมูลจาก Google Apps Script URL
     const sheetUrl = process.env.SHEET_ENDPOINT!; // ใส่ใน .env
