@@ -1,6 +1,6 @@
 // /api/enrich-sheet.ts
 import type { Request, Response } from "express";
-import { enrichTokens } from "../core/enrichTokens";
+import { enrichTokens } from "../core/enrichTokens.js";
 
 export default async function handler(req: Request, res: Response){
   try {
