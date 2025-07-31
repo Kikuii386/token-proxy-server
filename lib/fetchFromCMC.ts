@@ -1,7 +1,6 @@
 // lib/fetchFromCMC.ts
-import { getDexPlatformName } from "./utils";
+import { getDexPlatformName } from "../core/utils";
 
-const CMC_API = "https://pro-api.coinmarketcap.com/v1";
 const CMC_KEY = process.env.CMC_API_KEY!;
 
 function cmcHeaders() {
@@ -16,7 +15,7 @@ export async function fetchCMCMetadata(contract: string, chain: string) {
   const query = new URLSearchParams({ address: contract, aux: "platform,logo" });
 
   // Step 1: Try cryptocurrency/map
-  const res = await fetch(`${CMC_API}/cryptocurrency/map?${query}`, {
+  const res = await fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?${query}`, {
     headers: cmcHeaders(),
   });
   const data = await res.json();
@@ -32,7 +31,7 @@ export async function fetchCMCMetadata(contract: string, chain: string) {
 
   // Step 2: fallback to DEX map
   const dexPlatform = getDexPlatformName(chain);
-  const dexRes = await fetch(`${CMC_API}/dex/map?address=${contract}&platform=${dexPlatform}`, {
+  const dexRes = await fetch(`https://pro-api.coinmarketcap.com/v1/dex/map?address=${contract}&platform=${dexPlatform}`, {
     headers: cmcHeaders(),
   });
   const dexData = await dexRes.json();
@@ -47,4 +46,24 @@ export async function fetchCMCMetadata(contract: string, chain: string) {
   }
 
   return null;
+}
+
+import type { Request, Response } from "express";
+
+export async function fetchFromCMC(req: Request, res: Response) {
+  const { contract, chain } = req.query;
+
+  if (!contract || !chain || typeof contract !== "string" || typeof chain !== "string") {
+    return res.status(400).json({ error: "Missing contract or chain" });
+  }
+
+  try {
+    const metadata = await fetchCMCMetadata(contract, chain);
+    if (!metadata) {
+      return res.status(404).json({ error: "Not found" });
+    }
+    res.json(metadata);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch from CMC" });
+  }
 }

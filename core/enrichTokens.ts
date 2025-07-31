@@ -4,7 +4,7 @@ import { fetchCMCMetadata } from "../lib/fetchFromCMC";
 import { fetchGeckoMetadata } from "../lib/fetchFromGecko";
 import { fetchDexMetadata } from "../lib/fetchDexMetadata";
 import { cacheEnrichedToken } from "../lib/cache";
-import type { TokenInput, EnrichedToken } from "../types/Token";
+import type { TokenInput, TokenWithPrice as EnrichedToken } from "../types/Token";
 
 export async function enrichTokens(tokens: TokenInput[]): Promise<EnrichedToken[]> {
   const results: EnrichedToken[] = [];

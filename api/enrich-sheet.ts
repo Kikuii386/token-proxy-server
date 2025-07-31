@@ -1,6 +1,6 @@
 // /api/enrich-sheet.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import { enrichTokens } from "core/enrichTokens";
+import { enrichTokens } from "../core/enrichTokens";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {

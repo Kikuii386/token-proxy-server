@@ -1,9 +1,9 @@
 // /api/refresh-prices.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Redis } from "@upstash/redis";
-import { fetchDexPrice } from "lib/fetchDexPrice";
-import { fetchCMCPrice } from "lib/fetchCMCPrice";
-import { fetchGeckoPrice } from "lib/fetchGeckoPrice";
+import { Redis } from '@upstash/redis'
+import { fetchDexPrice } from "../lib/fetchDexPrice";
+import { fetchCMCPrice } from "../lib/fetchCMCPrice";
+import { fetchGeckoPrice } from "../lib/fetchGeckoPrice";
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL!,

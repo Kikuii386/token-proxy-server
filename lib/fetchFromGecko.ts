@@ -1,5 +1,5 @@
+import type { Request, Response } from "express";
 // lib/fetchFromGecko.ts
-const GECKO_API = "https://api.coingecko.com/api/v3";
 const GECKO_API_KEY = process.env.GECKO_API_KEY!;
 
 const CHAIN_MAP: Record<string, string> = {
@@ -43,5 +43,23 @@ export async function fetchGeckoMetadata(contract: string, chain: string) {
     };
   } catch (err) {
     return null;
+  }
+}
+
+export async function fetchFromGecko(req: Request, res: Response) {
+  const { contract, chain } = req.query;
+
+  if (!contract || !chain || typeof contract !== "string" || typeof chain !== "string") {
+    return res.status(400).json({ error: "Missing contract or chain" });
+  }
+
+  try {
+    const metadata = await fetchGeckoMetadata(contract, chain);
+    if (!metadata) {
+      return res.status(404).json({ error: "Not found" });
+    }
+    res.json(metadata);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch from Gecko" });
   }
 }
