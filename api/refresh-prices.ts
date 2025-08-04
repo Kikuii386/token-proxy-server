@@ -1,9 +1,9 @@
-// /api/refresh-prices.ts
-import type { Request, Response } from "express";
-import { Redis } from '@upstash/redis'
-import { fetchDexPrice } from "../lib/fetchDexPrice.js";
-import { fetchCMCPrice } from "../lib/fetchCMCPrice.js";
-import { fetchGeckoPrice } from "../lib/fetchGeckoPrice.js";
+// /api/refresh-prices/route.ts
+import { NextRequest } from "next/server";
+import { Redis } from "@upstash/redis";
+import { fetchDexPrice } from "@/lib/price/fetchDexPrice";
+import { fetchCMCPrice } from "@/lib/price/fetchCMCPrice";
+import { fetchGeckoPrice } from "@/lib/price/fetchGeckoPrice";
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL!,
@@ -12,43 +12,45 @@ const redis = new Redis({
 
 const TTL_SECONDS = 60; // 1 minute
 
-export default async function handler(req: Request, res: Response) {
+export async function GET(req: NextRequest) {
   try {
-    const { id, contract, chain, cmc_id: cmcIdStr, gecko_id } = req.query as {
-      id: string;
-      contract: string;
-      chain: string;
-      cmc_id?: string;
-      gecko_id?: string;
-    };
-    const cmc_id = cmcIdStr ? Number(cmcIdStr) : null;
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    const contract = searchParams.get("contract");
+    const chain = searchParams.get("chain");
+    const cmcIdStr = searchParams.get("cmc_id");
+    const gecko_id = searchParams.get("gecko_id");
 
-    if (!id || !contract || !chain) return res.status(400).json({ error: "Missing params" });
+    if (!id || !contract || !chain) {
+      return new Response(JSON.stringify({ source: null, price: null, error: "Missing params" }), { status: 400 });
+    }
 
-    // 1. Try Dexscreener (fastest)
+    if (cmcIdStr === null || isNaN(Number(cmcIdStr))) {
+      return new Response(JSON.stringify({ source: null, price: null, error: "Invalid cmc_id" }), { status: 400 });
+    }
+    const cmc_id = Number(cmcIdStr);
+
     const dexPrice = await fetchDexPrice(contract, chain);
-    if (dexPrice) {
+    if (dexPrice != null) {
       await redis.set(`price:${id}`, dexPrice, { ex: TTL_SECONDS });
-      return res.status(200).json({ source: "dex", price: dexPrice });
+      return new Response(JSON.stringify({ source: "dex", price: dexPrice, error: null }));
     }
 
-    // 2. Fallback: CMC
-    const cmcPrice = cmc_id ? await fetchCMCPrice(cmc_id) : null;
-    if (cmcPrice) {
+    const cmcPrice = await fetchCMCPrice(cmc_id);
+    if (cmcPrice != null) {
       await redis.set(`price:${id}`, cmcPrice, { ex: TTL_SECONDS });
-      return res.status(200).json({ source: "cmc", price: cmcPrice });
+      return new Response(JSON.stringify({ source: "cmc", price: cmcPrice, error: null }));
     }
 
-    // 3. Fallback: Gecko
     const geckoPrice = gecko_id ? await fetchGeckoPrice(gecko_id) : null;
-    if (geckoPrice) {
+    if (geckoPrice != null) {
       await redis.set(`price:${id}`, geckoPrice, { ex: TTL_SECONDS });
-      return res.status(200).json({ source: "gecko", price: geckoPrice });
+      return new Response(JSON.stringify({ source: "gecko", price: geckoPrice, error: null }));
     }
 
-    res.status(404).json({ error: "Price not found" });
+    return new Response(JSON.stringify({ source: null, price: null, error: "Price not found" }), { status: 404 });
   } catch (err) {
     console.error("Price Error:", err);
-    res.status(500).json({ error: "Failed to fetch price" });
+    return new Response(JSON.stringify({ source: null, price: null, error: "Failed to fetch price" }), { status: 500 });
   }
 }

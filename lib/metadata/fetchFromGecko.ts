@@ -1,5 +1,7 @@
-import type { Request, Response } from "express";
-// lib/fetchFromGecko.ts
+// lib/metadata/fetchFromGecko.ts
+// This file fetches metadata for a token from CoinGecko using its contract address and chain
+import { NextRequest } from "next/server";
+
 const GECKO_API_KEY = process.env.GECKO_API_KEY!;
 
 const CHAIN_MAP: Record<string, string> = {
@@ -46,20 +48,25 @@ export async function fetchGeckoMetadata(contract: string, chain: string) {
   }
 }
 
-export async function fetchFromGecko(req: Request, res: Response) {
-  const { contract, chain } = req.query;
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const contract = searchParams.get("contract");
+  const chain = searchParams.get("chain");
 
-  if (!contract || !chain || typeof contract !== "string" || typeof chain !== "string") {
-    return res.status(400).json({ error: "Missing contract or chain" });
+  if (!contract || !chain) {
+    return new Response(JSON.stringify({ error: "Missing contract or chain" }), { status: 400 });
   }
 
   try {
     const metadata = await fetchGeckoMetadata(contract, chain);
     if (!metadata) {
-      return res.status(404).json({ error: "Not found" });
+      return new Response(JSON.stringify({ error: "Not found" }), { status: 404 });
     }
-    res.json(metadata);
+
+    return new Response(JSON.stringify(metadata), {
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch from Gecko" });
+    return new Response(JSON.stringify({ error: "Failed to fetch from Gecko" }), { status: 500 });
   }
 }

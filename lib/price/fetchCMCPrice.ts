@@ -1,4 +1,5 @@
-// lib/fetchCMCPrice.ts
+// lib/price/fetchCMCPrice.ts
+// This file fetches the price of a cryptocurrency from CoinMarketCap using its ID.
 
 const CMC_API_KEY = process.env.CMC_API_KEY!;
 

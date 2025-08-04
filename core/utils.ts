@@ -14,6 +14,8 @@ export function getDexPlatformName(chain: string): string {
     LINEA: "linea",
     BLAST: "blast",
     SOL: "solana",
+    MATIC: "polygon-pos",
+    ARBITRUM: "arbitrum",
   };
 
   return map[chain.toUpperCase()] || chain.toLowerCase();

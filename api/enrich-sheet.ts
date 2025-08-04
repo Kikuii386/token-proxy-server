@@ -1,20 +1,23 @@
-// /api/enrich-sheet.ts
-import type { Request, Response } from "express";
-import { enrichTokens } from "../core/enrichTokens.js";
+// /api/enrich-sheet.ts (Next.js style)
+import { NextRequest } from "next/server";
+import { enrichTokens } from "@/core/enrichTokens";
 
-export default async function handler(req: Request, res: Response){
+export async function GET(req: NextRequest) {
   try {
-    // ดึงข้อมูลจาก Google Apps Script URL
-    const sheetUrl = process.env.SHEET_ENDPOINT!; // ใส่ใน .env
+    const sheetUrl = process.env.SHEET_ENDPOINT!;
     const raw = await fetch(sheetUrl);
     const tokens = await raw.json();
 
-    // enrich
     const enriched = await enrichTokens(tokens);
 
-    res.status(200).json(enriched);
+    return new Response(JSON.stringify(enriched), {
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (err: any) {
     console.error("Enrich Error:", err);
-    res.status(500).json({ error: "Failed to enrich tokens" });
+    return new Response(JSON.stringify({ error: "Failed to enrich tokens" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }

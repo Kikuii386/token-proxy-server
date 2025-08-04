@@ -1,6 +1,7 @@
 // supabase/client.ts
+import "dotenv/config"
 import { createClient } from "@supabase/supabase-js";
-import type { EnrichedToken } from "../types/Token";
+import type { TokenMapEntry } from "../types/Token";
 
 const supabaseUrl = process.env.SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -20,7 +21,7 @@ export async function getMappedToken(contract: string, chain: string) {
   return data;
 }
 
-export async function saveTokenMapping(token: EnrichedToken) {
+export async function saveTokenMapping(token: TokenMapEntry) {
   const { error } = await supabase.from(TABLE).upsert({
     contract: token.contract,
     chain: token.chain,

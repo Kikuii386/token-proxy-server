@@ -1,5 +1,5 @@
-// lib/fetchDexPrice.ts
-
+// lib/price/fetchDexPrice.ts
+// This file fetches the price of a cryptocurrency from a decentralized exchange (DEX) using its
 export async function fetchDexPrice(contract: string, chain: string): Promise<number | null> {
   try {
     const query = encodeURIComponent(`${chain}:${contract}`);

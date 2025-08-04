@@ -1,5 +1,5 @@
-// lib/fetchGeckoPrice.ts
-
+// lib/price/fetchGeckoPrice.ts
+// This file fetches the price of a cryptocurrency from CoinGecko using its ID.
 export async function fetchGeckoPrice(gecko_id: string): Promise<number | null> {
   if (!gecko_id) return null;
 

@@ -1,5 +1,6 @@
-// lib/fetchFromCMC.ts
-import { getDexPlatformName } from "../core/utils";
+// lib/metadata/fetchFromCMC.ts
+// This file fetches metadata for a token from CoinMarketCap using its contract address and chain
+import { getDexPlatformName } from "@/core/utils";
 
 const CMC_KEY = process.env.CMC_API_KEY!;
 
@@ -48,22 +49,26 @@ export async function fetchCMCMetadata(contract: string, chain: string) {
   return null;
 }
 
-import type { Request, Response } from "express";
+import { NextRequest } from "next/server";
 
-export async function fetchFromCMC(req: Request, res: Response) {
-  const { contract, chain } = req.query;
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const contract = searchParams.get("contract");
+  const chain = searchParams.get("chain");
 
-  if (!contract || !chain || typeof contract !== "string" || typeof chain !== "string") {
-    return res.status(400).json({ error: "Missing contract or chain" });
+  if (!contract || !chain) {
+    return new Response(JSON.stringify({ error: "Missing contract or chain" }), { status: 400 });
   }
 
   try {
     const metadata = await fetchCMCMetadata(contract, chain);
     if (!metadata) {
-      return res.status(404).json({ error: "Not found" });
+      return new Response(JSON.stringify({ error: "Not found" }), { status: 404 });
     }
-    res.json(metadata);
+    return new Response(JSON.stringify(metadata), {
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch from CMC" });
+    return new Response(JSON.stringify({ error: "Failed to fetch from CMC" }), { status: 500 });
   }
 }

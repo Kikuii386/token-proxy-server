@@ -1,6 +1,6 @@
 // lib/cache.ts
 import { Redis } from "@upstash/redis";
-import type { TokenWithPrice as EnrichedToken } from "../types/Token";
+import type { TokenWithPrice as EnrichedToken } from "@/types/Token";
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL!,
