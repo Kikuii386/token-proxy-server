@@ -1,5 +1,6 @@
 // supabase/client.ts
-import "dotenv/config"
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.local" });
 import { createClient } from "@supabase/supabase-js";
 import type { TokenMapEntry } from "../types/Token";
 
