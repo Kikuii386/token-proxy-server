@@ -2,9 +2,9 @@
   "/api/enrich-sheet/route": "app/api/enrich-sheet/route.js",
   "/api/meta/gecko/route": "app/api/meta/gecko/route.js",
   "/api/price/cmc/route": "app/api/price/cmc/route.js",
-  "/api/price/dex/route": "app/api/price/dex/route.js",
   "/api/price/gecko/route": "app/api/price/gecko/route.js",
+  "/api/price/dex/route": "app/api/price/dex/route.js",
   "/api/refresh-prices/route": "app/api/refresh-prices/route.js",
-  "/api/meta/dex/route": "app/api/meta/dex/route.js",
-  "/api/meta/cmc/route": "app/api/meta/cmc/route.js"
+  "/api/meta/cmc/route": "app/api/meta/cmc/route.js",
+  "/api/meta/dex/route": "app/api/meta/dex/route.js"
 }

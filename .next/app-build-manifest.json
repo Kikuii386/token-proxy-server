@@ -21,19 +21,19 @@
       "static/chunks/main-app-fa66804074d64b7b.js",
       "static/chunks/app/api/price/cmc/route-16db5661ce56ecb0.js"
     ],
-    "/api/price/dex/route": [
-      "static/chunks/webpack-23055d52f9c766c3.js",
-      "static/chunks/93805c03-4f76366c4b2dea2c.js",
-      "static/chunks/292-cfe5e46e6ccc0607.js",
-      "static/chunks/main-app-fa66804074d64b7b.js",
-      "static/chunks/app/api/price/dex/route-16db5661ce56ecb0.js"
-    ],
     "/api/price/gecko/route": [
       "static/chunks/webpack-23055d52f9c766c3.js",
       "static/chunks/93805c03-4f76366c4b2dea2c.js",
       "static/chunks/292-cfe5e46e6ccc0607.js",
       "static/chunks/main-app-fa66804074d64b7b.js",
       "static/chunks/app/api/price/gecko/route-16db5661ce56ecb0.js"
+    ],
+    "/api/price/dex/route": [
+      "static/chunks/webpack-23055d52f9c766c3.js",
+      "static/chunks/93805c03-4f76366c4b2dea2c.js",
+      "static/chunks/292-cfe5e46e6ccc0607.js",
+      "static/chunks/main-app-fa66804074d64b7b.js",
+      "static/chunks/app/api/price/dex/route-16db5661ce56ecb0.js"
     ],
     "/api/refresh-prices/route": [
       "static/chunks/webpack-23055d52f9c766c3.js",
@@ -42,19 +42,19 @@
       "static/chunks/main-app-fa66804074d64b7b.js",
       "static/chunks/app/api/refresh-prices/route-16db5661ce56ecb0.js"
     ],
-    "/api/meta/dex/route": [
-      "static/chunks/webpack-23055d52f9c766c3.js",
-      "static/chunks/93805c03-4f76366c4b2dea2c.js",
-      "static/chunks/292-cfe5e46e6ccc0607.js",
-      "static/chunks/main-app-fa66804074d64b7b.js",
-      "static/chunks/app/api/meta/dex/route-16db5661ce56ecb0.js"
-    ],
     "/api/meta/cmc/route": [
       "static/chunks/webpack-23055d52f9c766c3.js",
       "static/chunks/93805c03-4f76366c4b2dea2c.js",
       "static/chunks/292-cfe5e46e6ccc0607.js",
       "static/chunks/main-app-fa66804074d64b7b.js",
       "static/chunks/app/api/meta/cmc/route-16db5661ce56ecb0.js"
+    ],
+    "/api/meta/dex/route": [
+      "static/chunks/webpack-23055d52f9c766c3.js",
+      "static/chunks/93805c03-4f76366c4b2dea2c.js",
+      "static/chunks/292-cfe5e46e6ccc0607.js",
+      "static/chunks/main-app-fa66804074d64b7b.js",
+      "static/chunks/app/api/meta/dex/route-16db5661ce56ecb0.js"
     ]
   }
 }
