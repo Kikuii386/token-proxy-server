@@ -48,27 +48,3 @@ export async function fetchCMCMetadata(contract: string, chain: string) {
 
   return null;
 }
-
-import { NextRequest } from "next/server";
-
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const contract = searchParams.get("contract");
-  const chain = searchParams.get("chain");
-
-  if (!contract || !chain) {
-    return new Response(JSON.stringify({ error: "Missing contract or chain" }), { status: 400 });
-  }
-
-  try {
-    const metadata = await fetchCMCMetadata(contract, chain);
-    if (!metadata) {
-      return new Response(JSON.stringify({ error: "Not found" }), { status: 404 });
-    }
-    return new Response(JSON.stringify(metadata), {
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: "Failed to fetch from CMC" }), { status: 500 });
-  }
-}

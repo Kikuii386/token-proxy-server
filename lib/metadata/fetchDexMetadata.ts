@@ -1,3 +1,5 @@
+import { NextRequest } from "next/server";
+
 // lib/metadata/fetchDexMetadata.ts
 // This file fetches metadata for a token from DexScreener using its contract address.
 
@@ -21,7 +23,6 @@ export async function fetchDexMetadata(contract: string): Promise<{
     return null;
   }
 }
-import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -32,5 +33,10 @@ export async function GET(req: NextRequest) {
   }
 
   const result = await fetchDexMetadata(contract);
-  return Response.json(result);
+  return new Response(JSON.stringify(result), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }

@@ -1,5 +1,4 @@
 // lib/metadata/fetchFromGecko.ts
-// This file fetches metadata for a token from CoinGecko using its contract address and chain
 import { NextRequest } from "next/server";
 
 const GECKO_API_KEY = process.env.GECKO_API_KEY!;
