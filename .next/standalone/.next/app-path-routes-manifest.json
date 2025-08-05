@@ -1,0 +1,10 @@
+{
+  "/api/enrich-sheet/route": "/api/enrich-sheet",
+  "/api/meta/gecko/route": "/api/meta/gecko",
+  "/api/price/cmc/route": "/api/price/cmc",
+  "/api/price/dex/route": "/api/price/dex",
+  "/api/price/gecko/route": "/api/price/gecko",
+  "/api/refresh-prices/route": "/api/refresh-prices",
+  "/api/meta/dex/route": "/api/meta/dex",
+  "/api/meta/cmc/route": "/api/meta/cmc"
+}
