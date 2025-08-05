@@ -32,3 +32,31 @@ export const GET = async (req: Request) => {
     });
   }
 };
+
+export const POST = async (req: Request) => {
+  try {
+    const { tokens } = await req.json();
+    if (!tokens || !Array.isArray(tokens)) {
+      return new Response(JSON.stringify({ error: "Invalid input" }), { status: 400 });
+    }
+
+    const results = await Promise.all(
+      tokens.map(({ contract, chain }: { contract: string; chain: string }) =>
+        fetchCMCMetadata(contract, chain)
+      )
+    );
+
+    return new Response(JSON.stringify(results), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: "Failed to process POST" }), {
+      status: 500,
+      headers: { "Access-Control-Allow-Origin": "*" },
+    });
+  }
+};
